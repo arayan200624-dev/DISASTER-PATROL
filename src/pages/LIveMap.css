@@ -1,0 +1,459 @@
+.live-map-page {
+  width: 100%;
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.live-map-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.live-map-header h1 {
+  margin: 0;
+  color: white;
+  font-size: 26px;
+}
+
+.page-label {
+  margin: 0 0 6px;
+  color: #9e95ff;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.live-map-header .page-description {
+  margin: 7px 0 0;
+  color: #737e94;
+  font-size: 11px;
+}
+
+/* =========================
+   LIVE STATUS
+========================= */
+
+.map-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 11px;
+
+  border: 1px solid #202f2b;
+  border-radius: 7px;
+
+  color: #43d99a;
+  background: #0e1817;
+
+  font-size: 9px;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #43d99a;
+
+  box-shadow: 0 0 8px rgba(67, 217, 154, 0.7);
+}
+
+/* =========================
+   MAP CARD
+========================= */
+
+.map-card {
+  width: 100%;
+
+  border: 1px solid #202535;
+  border-radius: 13px;
+
+  background: #101522;
+
+  overflow: hidden;
+}
+
+/* =========================
+   MAP TOOLBAR
+========================= */
+
+.map-toolbar {
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 15px;
+
+  border-bottom: 1px solid #202535;
+}
+
+.map-location {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #aeb6c7;
+
+  font-size: 10px;
+}
+
+.map-location svg {
+  color: #9e95ff;
+}
+
+/* =========================
+   REAL MAP
+========================= */
+
+.map-container {
+  position: relative;
+
+  width: 100%;
+  height: 430px;
+
+  overflow: hidden;
+}
+
+/* React Leaflet map */
+
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+/* =========================
+   LEAFLET CONTROLS
+========================= */
+
+.map-controls {
+  position: absolute;
+
+  top: 15px;
+  left: 15px;
+
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.map-controls button {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #292f3e;
+  border-radius: 6px;
+
+  color: #8d96a9;
+  background: #151a27;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.map-controls button:hover {
+  color: white;
+  background: #202738;
+}
+
+/* =========================
+   CUSTOM MAP MARKERS
+========================= */
+
+.custom-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* =========================
+   MAP LEGEND
+========================= */
+
+.map-legend {
+  position: absolute;
+
+  right: 15px;
+  bottom: 15px;
+
+  width: 145px;
+
+  padding: 12px;
+
+  border: 1px solid #293142;
+  border-radius: 9px;
+
+  background: rgba(12, 17, 28, 0.94);
+
+  z-index: 1000;
+
+  backdrop-filter: blur(8px);
+}
+
+.map-legend strong {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #e6e9ef;
+
+  font-size: 9px;
+}
+
+.map-legend div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 7px;
+
+  color: #7f899d;
+
+  font-size: 8px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+}
+
+.legend-dot.incident {
+  background: #e95867;
+
+  box-shadow: 0 0 6px rgba(233, 88, 103, 0.5);
+}
+
+.legend-dot.shelter {
+  background: #5d76ff;
+
+  box-shadow: 0 0 6px rgba(93, 118, 255, 0.5);
+}
+
+.legend-dot.team {
+  background: #43b889;
+
+  box-shadow: 0 0 6px rgba(67, 184, 137, 0.5);
+}
+
+/* =========================
+   LOCATION LIST CARD
+========================= */
+
+.map-locations-card {
+  margin-top: 16px;
+
+  border: 1px solid #202535;
+  border-radius: 13px;
+
+  background: #101522;
+
+  overflow: hidden;
+}
+
+.locations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #202535;
+}
+
+.locations-header h2 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 15px;
+}
+
+.locations-header p {
+  margin: 5px 0 0;
+
+  color: #68738a;
+
+  font-size: 9px;
+}
+
+.locations-header > span {
+  color: #68738a;
+
+  font-size: 9px;
+}
+
+/* =========================
+   LOCATION ROW
+========================= */
+
+.location-row {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-height: 65px;
+
+  padding: 10px 20px;
+
+  border-bottom: 1px solid #1c2130;
+}
+
+.location-row:last-child {
+  border-bottom: none;
+}
+
+/* =========================
+   LOCATION ICON
+========================= */
+
+.location-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+}
+
+.location-icon.incident {
+  color: #e95867;
+  background: rgba(233, 88, 103, 0.1);
+}
+
+.location-icon.shelter {
+  color: #5d76ff;
+  background: rgba(93, 118, 255, 0.1);
+}
+
+.location-icon.team {
+  color: #43b889;
+  background: rgba(67, 184, 137, 0.1);
+}
+
+/* =========================
+   LOCATION INFO
+========================= */
+
+.location-info {
+  flex: 1;
+}
+
+.location-info strong {
+  display: block;
+
+  color: #e8ebf2;
+
+  font-size: 10px;
+}
+
+.location-info span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #68738a;
+
+  font-size: 8px;
+}
+
+/* =========================
+   LOCATION STATUS
+========================= */
+
+.location-status {
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.location-status.incident {
+  color: #e95867;
+}
+
+.location-status.shelter {
+  color: #5d76ff;
+}
+
+.location-status.team {
+  color: #43b889;
+}
+
+/* =========================
+   LEAFLET POPUP
+========================= */
+
+.leaflet-popup-content-wrapper {
+  background: #101522;
+  color: #e8ebf2;
+
+  border: 1px solid #293142;
+  border-radius: 8px;
+}
+
+.leaflet-popup-tip {
+  background: #101522;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.leaflet-popup-content strong {
+  color: white;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+  .live-map-header {
+    flex-direction: column;
+  }
+
+  .map-container {
+    height: 350px;
+  }
+
+  .map-legend {
+    right: 10px;
+    bottom: 10px;
+
+    width: 130px;
+  }
+
+  .location-row {
+    padding: 10px 14px;
+  }
+}

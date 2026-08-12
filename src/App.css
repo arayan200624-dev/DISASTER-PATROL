@@ -1,0 +1,1346 @@
+/* =========================================================
+   DISASTER PATROL
+   INDUSTRIAL EMERGENCY COMMAND INTERFACE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0b0d0e;
+  color: #e6e3da;
+  font-family:
+    "Arial Narrow",
+    "Roboto Condensed",
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: 100%;
+  min-height: 100vh;
+  background: #0b0d0e;
+}
+
+.main-area {
+  position: relative;
+  min-height: 100vh;
+  margin-left: 250px;
+  width: auto;
+  min-width: 0;
+  background: #0b0d0e;
+}
+
+.dashboard-content {
+  position: relative;
+  min-height: calc(100vh - 72px);
+  padding: 26px 30px 50px;
+  overflow: hidden;
+}
+
+.dashboard-page {
+  position: relative;
+  min-height: calc(100vh - 128px);
+  isolation: isolate;
+}
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.dashboard-map-background {
+  position: absolute;
+  inset: -100px -70px -70px -70px;
+  z-index: -5;
+  overflow: hidden;
+  background: #101516;
+  pointer-events: auto;
+}
+
+.dashboard-leaflet-map {
+  width: 100%;
+  height: 100%;
+  background: #101516;
+}
+
+.dashboard-leaflet-map .leaflet-tile {
+  filter:
+    grayscale(0.85)
+    brightness(0.55)
+    contrast(1.15)
+    saturate(0.55);
+}
+
+.dashboard-leaflet-map .leaflet-control-attribution {
+  background: rgba(10, 12, 13, 0.82);
+  color: #737978;
+  font-size: 8px;
+}
+
+.dashboard-leaflet-map .leaflet-control-attribution a {
+  color: #969d9b;
+}
+
+.map-dark-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(9, 12, 13, 0.92),
+      rgba(9, 12, 13, 0.35) 43%,
+      rgba(9, 12, 13, 0.82)
+    ),
+    linear-gradient(
+      0deg,
+      rgba(8, 11, 12, 0.9),
+      transparent 45%,
+      rgba(8, 11, 12, 0.42)
+    );
+}
+
+.map-grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 401;
+  pointer-events: none;
+  opacity: 0.14;
+
+  background-image:
+    linear-gradient(
+      rgba(170, 174, 164, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(170, 174, 164, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size: 70px 70px;
+}
+
+.map-region-label {
+  position: absolute;
+  z-index: 402;
+  pointer-events: none;
+
+  color: rgba(204, 207, 197, 0.2);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.india-label {
+  top: 42%;
+  left: 50%;
+}
+
+.pakistan-label {
+  top: 37%;
+  left: 38%;
+}
+
+.nepal-label {
+  top: 30%;
+  left: 51%;
+}
+
+.bangladesh-label {
+  top: 44%;
+  left: 62%;
+}
+
+/* =========================================================
+   MAP HEADER
+   ========================================================= */
+
+.dashboard-map-header {
+  position: relative;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+.map-command-status,
+.map-location-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 30px;
+  padding: 6px 10px;
+
+  border: 1px solid #3a4141;
+  border-radius: 2px;
+
+  background: rgba(13, 17, 17, 0.92);
+
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.map-command-status {
+  color: #86a58f;
+  border-left: 3px solid #718e78;
+}
+
+.map-location-indicator {
+  color: #8c9490;
+}
+
+.status-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78947d;
+}
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.welcome-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 28px 0 22px;
+}
+
+.welcome-label {
+  margin: 0 0 8px;
+
+  color: #b38b46;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+}
+
+.welcome-section h2 {
+  margin: 0;
+
+  color: #ebe8df;
+  font-size: 29px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  text-transform: uppercase;
+}
+
+.welcome-section p:not(.welcome-label) {
+  margin: 8px 0 0;
+
+  color: #7d8583;
+  font-size: 11px;
+  letter-spacing: 0.2px;
+}
+
+.primary-button {
+  min-height: 36px;
+  padding: 9px 15px;
+
+  border: 1px solid #765b32;
+  border-radius: 2px;
+
+  color: #e8e2d4;
+  background: #2b2418;
+
+  box-shadow: none;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.primary-button:hover {
+  background: #352b1b;
+  border-color: #a17b3d;
+}
+
+/* =========================================================
+   COMMAND STATISTICS
+   ========================================================= */
+
+.command-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+
+  margin-bottom: 15px;
+}
+
+.command-stat {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 76px;
+  padding: 13px;
+
+  border: 1px solid #303636;
+  border-radius: 2px;
+
+  background: #111516;
+}
+
+.command-stat-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 2px;
+  border: 1px solid #3a4140;
+}
+
+.command-stat-icon.danger {
+  color: #c95a51;
+  background: #241716;
+  border-color: #61322f;
+}
+
+.command-stat-icon.warning {
+  color: #c49a4c;
+  background: #241f15;
+  border-color: #5f4d2e;
+}
+
+.command-stat-icon.blue {
+  color: #879aa0;
+  background: #171d1e;
+  border-color: #394648;
+}
+
+.command-stat-icon.green {
+  color: #78917d;
+  background: #151d18;
+  border-color: #384c3d;
+}
+
+.command-stat span {
+  display: block;
+
+  color: #6e7775;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+}
+
+.command-stat strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #e7e4dc;
+  font-size: 19px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(300px, 0.8fr);
+
+  gap: 14px;
+  align-items: start;
+}
+
+.dashboard-main-column,
+.dashboard-side-column {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.intel-panel,
+.incident-radar-panel {
+  border: 1px solid #303737;
+  border-radius: 2px;
+
+  background: #101415;
+
+  overflow: hidden;
+}
+
+.intel-panel-header,
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  min-height: 64px;
+  padding: 14px 16px;
+
+  border-bottom: 1px solid #2d3333;
+  background: #131819;
+}
+
+.intel-panel-header p,
+.panel-title-row p {
+  margin: 0 0 4px;
+
+  color: #9b7940;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+}
+
+.intel-panel-header h3,
+.panel-title-row h3 {
+  margin: 0;
+
+  color: #e3e1d9;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.intel-live,
+.radar-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #829a88;
+
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   INTELLIGENCE
+   ========================================================= */
+
+.intel-body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.intel-item {
+  padding: 15px 16px;
+
+  border-right: 1px solid #2b3232;
+}
+
+.intel-item:last-child {
+  border-right: none;
+}
+
+.intel-item span {
+  display: block;
+
+  color: #68716f;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.intel-item strong {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #e5e2d9;
+  font-size: 14px;
+}
+
+.intel-item .online {
+  color: #819986;
+  font-size: 10px;
+}
+
+/* =========================================================
+   INCIDENT RADAR
+   ========================================================= */
+
+.radar-live {
+  padding: 5px 7px;
+
+  border: 1px solid #38443d;
+  border-radius: 2px;
+
+  color: #809785;
+  background: #151b17;
+}
+
+.radar-list {
+  padding: 3px 16px;
+}
+
+.radar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #292f2f;
+}
+
+.radar-item:last-child {
+  border-bottom: none;
+}
+
+.radar-item strong {
+  display: block;
+
+  color: #dddcd5;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.radar-item span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #6c7573;
+  font-size: 8px;
+}
+
+.radar-item b {
+  padding: 4px 6px;
+
+  border-radius: 2px;
+
+  font-size: 7px;
+  letter-spacing: 0.8px;
+}
+
+.radar-item.critical b {
+  color: #cf6259;
+  background: #271817;
+  border: 1px solid #59312e;
+}
+
+.radar-item.high b {
+  color: #c69b4d;
+  background: #251f15;
+  border: 1px solid #594a2e;
+}
+
+/* =========================================================
+   STAT GRID
+   ========================================================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/*
+   Existing StatCard / UsageChart / ModelHealth /
+   ActivityFeed components will inherit the industrial
+   surface below where their own CSS doesn't override it.
+*/
+
+.stats-grid > *,
+.dashboard-main-column > *,
+.dashboard-side-column > * {
+  --panel-bg: #101415;
+  --panel-border: #303737;
+}
+
+/* =========================================================
+   LEAFLET POPUP
+   ========================================================= */
+
+.leaflet-popup-content-wrapper {
+  background: #111516;
+  color: #dedbd2;
+  border: 1px solid #3a4140;
+  border-radius: 2px;
+}
+
+.leaflet-popup-tip {
+  background: #111516;
+}
+
+.leaflet-popup-content {
+  font-family:
+    "Arial Narrow",
+    Inter,
+    sans-serif;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   COMING SOON
+   ========================================================= */
+
+.coming-soon {
+  min-height: 500px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  text-align: center;
+
+  border: 1px solid #303737;
+  background: #101415;
+}
+
+.coming-soon svg {
+  color: #9c7a40;
+}
+
+.coming-soon p {
+  margin: 15px 0 0;
+
+  color: #9b7940;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.coming-soon h2 {
+  margin: 10px 0 5px;
+
+  color: #e5e2da;
+  text-transform: uppercase;
+}
+
+.coming-soon span {
+  color: #68716f;
+  font-size: 11px;
+}
+
+/* =========================================================
+   BOOT SCREEN
+   ========================================================= */
+
+.boot-screen {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #080a0a;
+  color: #e5e2d9;
+
+  font-family:
+    "Arial Narrow",
+    "Roboto Condensed",
+    Inter,
+    Arial,
+    sans-serif;
+
+  animation:
+    boot-fade-out 0.8s ease 3.35s forwards;
+}
+
+/* very subtle technical texture */
+
+.boot-noise {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.045;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.8) 0,
+      rgba(255, 255, 255, 0.8) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  pointer-events: none;
+}
+
+.boot-grid {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.12;
+
+  background-image:
+    linear-gradient(
+      #68706d 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      #68706d 1px,
+      transparent 1px
+    );
+
+  background-size: 65px 65px;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   BOOT FRAME
+   ========================================================= */
+
+.boot-frame {
+  position: absolute;
+  inset: 24px;
+
+  border: 1px solid #343a39;
+}
+
+.boot-frame::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 1px;
+
+  background: #252b2a;
+}
+
+.boot-frame::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+
+  width: 1px;
+
+  background: #252b2a;
+}
+
+.boot-frame-corner {
+  position: absolute;
+
+  width: 18px;
+  height: 18px;
+
+  border-color: #7c817c;
+  border-style: solid;
+}
+
+.boot-frame-corner.top-left {
+  top: -1px;
+  left: -1px;
+
+  border-width: 3px 0 0 3px;
+}
+
+.boot-frame-corner.top-right {
+  top: -1px;
+  right: -1px;
+
+  border-width: 3px 3px 0 0;
+}
+
+.boot-frame-corner.bottom-left {
+  bottom: -1px;
+  left: -1px;
+
+  border-width: 0 0 3px 3px;
+}
+
+.boot-frame-corner.bottom-right {
+  bottom: -1px;
+  right: -1px;
+
+  border-width: 0 3px 3px 0;
+}
+
+/* =========================================================
+   BOOT META
+   ========================================================= */
+
+.boot-meta {
+  position: absolute;
+
+  top: 45px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  color: #626a68;
+
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.boot-meta-left {
+  left: 48px;
+}
+
+.boot-meta-right {
+  right: 48px;
+  text-align: right;
+}
+
+/* =========================================================
+   BOOT CENTER
+   ========================================================= */
+
+.boot-center {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(760px, 90vw);
+
+  text-align: center;
+}
+
+/* =========================================================
+   SIREN
+   ========================================================= */
+
+.siren-unit {
+  position: relative;
+
+  width: 180px;
+  height: 180px;
+
+  margin: 0 auto 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+
+  animation:
+    siren-entry 0.8s ease 0.15s forwards;
+}
+
+.siren-base {
+  width: 156px;
+  height: 156px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 8px solid #242827;
+  border-radius: 50%;
+
+  background: #101312;
+
+  box-shadow:
+    inset 0 0 0 2px #515754,
+    inset 0 0 0 12px #181c1b;
+}
+
+.siren-ring {
+  width: 105px;
+  height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #bd4942;
+
+  background: #241312;
+
+  border: 2px solid #71332f;
+
+  animation: siren-pulse 0.9s ease-in-out infinite;
+}
+
+.siren-beacon {
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+
+  top: 10px;
+
+  border-radius: 50%;
+
+  background: #c14a43;
+
+  box-shadow:
+    0 0 15px rgba(193, 74, 67, 0.55);
+
+  animation: beacon-pulse 0.9s ease-in-out infinite;
+}
+
+/* =========================================================
+   BOOT STATUS
+   ========================================================= */
+
+.boot-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  color: #777e7b;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+
+  opacity: 0;
+
+  animation: status-entry 0.5s ease 0.8s forwards;
+}
+
+.status-light {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #a14a43;
+}
+
+/* =========================================================
+   BOOT TITLE
+   ========================================================= */
+
+.boot-title {
+  margin-top: 22px;
+
+  line-height: 0.82;
+
+  letter-spacing: -4px;
+
+  opacity: 0;
+
+  transform: translateY(25px);
+
+  animation:
+    title-entry 0.8s ease 1.25s forwards;
+}
+
+.boot-title div {
+  color: #bdbdb4;
+
+  font-size: clamp(42px, 7vw, 82px);
+
+  font-weight: 300;
+}
+
+.boot-title strong {
+  display: block;
+
+  color: #e8e5dc;
+
+  font-size: clamp(68px, 12vw, 140px);
+
+  font-weight: 900;
+}
+
+/* =========================================================
+   BOOT SUBTITLE
+   ========================================================= */
+
+.boot-subtitle {
+  margin-top: 24px;
+
+  color: #6d7471;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 4px;
+
+  opacity: 0;
+
+  animation:
+    simple-fade 0.6s ease 1.9s forwards;
+}
+
+/* =========================================================
+   BOOT PROGRESS
+   ========================================================= */
+
+.boot-progress {
+  width: 310px;
+  height: 3px;
+
+  margin: 27px auto 16px;
+
+  overflow: hidden;
+
+  background: #292e2d;
+
+  opacity: 0;
+
+  animation:
+    simple-fade 0.4s ease 2s forwards;
+}
+
+.boot-progress span {
+  display: block;
+
+  width: 0;
+  height: 100%;
+
+  background: #9e413b;
+
+  animation:
+    boot-progress 2s linear 0.55s forwards;
+}
+
+/* =========================================================
+   BOOT SYSTEM ROW
+   ========================================================= */
+
+.boot-system-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+
+  color: #626966;
+
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+
+  opacity: 0;
+
+  animation:
+    simple-fade 0.5s ease 2.45s forwards;
+}
+
+.boot-system-row span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* =========================================================
+   BOOT FOOTER
+   ========================================================= */
+
+.boot-footer {
+  position: absolute;
+
+  bottom: 42px;
+  left: 48px;
+  right: 48px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #4e5553;
+
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* =========================================================
+   BOOT ANIMATIONS
+   ========================================================= */
+
+@keyframes siren-entry {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes siren-pulse {
+  0%,
+  100% {
+    background: #211211;
+    color: #93413b;
+  }
+
+  50% {
+    background: #451917;
+    color: #d06057;
+  }
+}
+
+@keyframes beacon-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes status-entry {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes title-entry {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes simple-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes boot-progress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes boot-fade-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .main-area {
+    margin-left: 220px;
+  }
+
+  .command-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .main-area {
+    margin-left: 0;
+  }
+
+  .dashboard-content {
+    padding: 20px 16px 40px;
+  }
+
+  .welcome-section {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .intel-body {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intel-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .intel-item:nth-child(-n + 2) {
+    border-bottom: 1px solid #2b3232;
+  }
+
+  .boot-meta {
+    font-size: 7px;
+  }
+
+  .boot-meta-left {
+    left: 28px;
+  }
+
+  .boot-meta-right {
+    right: 28px;
+  }
+
+  .boot-footer {
+    left: 28px;
+    right: 28px;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-map-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .command-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intel-body {
+    grid-template-columns: 1fr;
+  }
+
+  .intel-item {
+    border-right: none;
+    border-bottom: 1px solid #2b3232;
+  }
+
+  .intel-item:last-child {
+    border-bottom: none;
+  }
+
+  .welcome-section h2 {
+    font-size: 23px;
+  }
+
+  .boot-frame {
+    inset: 12px;
+  }
+
+  .boot-meta {
+    display: none;
+  }
+
+  .boot-footer {
+    bottom: 25px;
+    left: 25px;
+    right: 25px;
+  }
+
+  .siren-unit {
+    width: 135px;
+    height: 135px;
+  }
+
+  .siren-base {
+    width: 120px;
+    height: 120px;
+  }
+
+  .siren-ring {
+    width: 82px;
+    height: 82px;
+  }
+
+  .boot-title {
+    letter-spacing: -2px;
+  }
+
+  .boot-subtitle {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .boot-progress {
+    width: 230px;
+  }
+
+  .boot-system-row {
+    gap: 12px;
+    font-size: 7px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
