@@ -1,9 +1,4 @@
 {
   "buildCommand": "vite build",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/index.ts": {
-      "runtime": "nodejs24.x"
-    }
-  }
+  "outputDirectory": "dist"
 }
