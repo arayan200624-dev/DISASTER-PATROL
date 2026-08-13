@@ -8,36 +8,45 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigin = process.env.FRONTEND_URL;
+
+app.use(
+  cors({
+    origin: allowedOrigin || "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
 app.use("/api/incidents", incidentRoutes);
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.json({
-    message: "AI Disaster Management API is running 🚨"
+    message: "AI Disaster Management API is running 🚨",
   });
 });
 
-app.get("/test-db", async (req, res) => {
+app.get("/test-db", async (_req, res) => {
   try {
     const [rows] = await pool.query("SELECT 1 AS result");
 
     res.json({
       message: "MySQL connected successfully!",
-      database: rows
+      database: rows,
     });
   } catch (error) {
     console.error("Database connection error:", error);
 
     res.status(500).json({
-      message: "Database connection failed"
+      message: "Database connection failed",
     });
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT || 5000);
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
