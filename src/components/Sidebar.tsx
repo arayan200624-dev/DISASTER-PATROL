@@ -1,9 +1,6 @@
 import {
   AlertTriangle,
   BarChart3,
-  Bot,
-  Database,
-  FileText,
   House,
   LayoutDashboard,
   Map,
@@ -86,118 +83,91 @@ export default function Sidebar({
         </div>
 
         <nav className="sidebar-nav">
+          <div className="nav-group">
+            <p className="nav-label">MAIN</p>
 
-          <p className="nav-label">
-            MAIN
-          </p>
+            <button
+              className={`nav-link ${currentPage === "dashboard" ? "active" : ""}`}
+              onClick={() => navigate("dashboard")}
+            >
+              <LayoutDashboard size={18} />
+              <span>Dashboard</span>
+            </button>
 
-          <button
-            className={`nav-item ${
-              currentPage === "dashboard"
-                ? "active"
-                : ""
-            }`}
-            onClick={() => navigate("dashboard")}
-          >
-            <LayoutDashboard size={18} />
-            <span>Dashboard</span>
-          </button>
+            <button
+              className={`nav-link ${currentPage === "live-map" ? "active" : ""}`}
+              onClick={() => navigate("live-map")}
+            >
+              <Map size={18} />
+              <span>Live Map</span>
+            </button>
 
-          <button
-            className={`nav-item ${
-              currentPage === "live-map"
-                ? "active"
-                : ""
-            }`}
-            onClick={() => navigate("live-map")}
-          >
-            <Map size={18} />
-            <span>Live Map</span>
-          </button>
+            <button
+              className={`nav-link ${currentPage === "incidents" ? "active" : ""}`}
+              onClick={() => navigate("incidents")}
+            >
+              <AlertTriangle size={18} />
+              <span>Incidents</span>
+            </button>
 
-          <button
-            className={`nav-item ${
-              currentPage === "incidents"
-                ? "active"
-                : ""
-            }`}
-            onClick={() => navigate("incidents")}
-          >
-            <AlertTriangle size={18} />
-            <span>Incidents</span>
+            <button
+              className={`nav-link ${currentPage === "alerts" ? "active" : ""}`}
+              onClick={() => navigate("alerts")}
+            >
+              <AlertTriangle size={18} />
+              <span>Alerts</span>
+            </button>
 
-            <em>12</em>
-          </button>
+            <button
+              className={`nav-link ${currentPage === "analytics" ? "active" : ""}`}
+              onClick={() => navigate("analytics")}
+            >
+              <BarChart3 size={18} />
+              <span>Analytics</span>
+            </button>
 
-          <button className="nav-item">
-            <AlertTriangle size={18} />
-            <span>Alerts</span>
+            <button
+              className={`nav-link ${currentPage === "ai-prediction" ? "active" : ""}`}
+              onClick={() => navigate("ai-prediction")}
+            >
+              <Brain size={18} />
+              <span>AI Prediction</span>
+            </button>
+          </div>
 
-            <em className="danger-count">
-              3
-            </em>
-          </button>
+          <div className="nav-group">
+            <p className="nav-label">OPERATIONS</p>
 
-          <button className="nav-item">
-            <BarChart3 size={18} />
-            <span>Analytics</span>
-          </button>
-<button
-  className={`nav-item ${
-    currentPage === "ai-prediction" ? "active" : ""
-  }`}
-  onClick={() => navigate("ai-prediction")}
->
-  <Brain size={19} />
-  <span>AI Prediction</span>
-</button>
-          <button className="nav-item">
-            <Bot size={18} />
-            <span>AI Models</span>
-          </button>
+            <button
+              className={`nav-link ${currentPage === "shelters" ? "active" : ""}`}
+              onClick={() => navigate("shelters")}
+            >
+              <House size={18} />
+              <span>Shelters</span>
+            </button>
 
-          <p className="nav-label nav-label-spaced">
-            OPERATIONS
-          </p>
+            <button
+              className={`nav-link ${currentPage === "response-teams" ? "active" : ""}`}
+              onClick={() => navigate("response-teams")}
+            >
+              <Users size={18} />
+              <span>Response Teams</span>
+            </button>
 
-          <button className="nav-item">
-            <House size={18} />
-            <span>Shelters</span>
-          </button>
+            <button className="nav-link">
+              <Truck size={18} />
+              <span>Logistics</span>
+            </button>
+          </div>
 
-          <button className="nav-item">
-            <Users size={18} />
-            <span>Response Teams</span>
-          </button>
+          <div className="nav-group">
+            <p className="nav-label">SYSTEM</p>
 
-          <button className="nav-item">
-            <Truck size={18} />
-            <span>Logistics</span>
-          </button>
-
-          <button className="nav-item">
-            <FileText size={18} />
-            <span>Reports</span>
-          </button>
-
-          <button className="nav-item">
-            <Database size={18} />
-            <span>Data</span>
-          </button>
-
-          <p className="nav-label nav-label-spaced">
-            SYSTEM
-          </p>
-
-          <button className="nav-item">
-            <ShieldCheck size={18} />
-            <span>Security</span>
-          </button>
-
-          <button className="nav-item">
-            <Settings size={18} />
-            <span>Settings</span>
-          </button>
+            <button className="nav-link">
+              <Settings size={18} />
+              <span>Settings</span>
+            </button>
+          </div>
 
         </nav>
 

@@ -1,6 +1,5 @@
 import {
   Bell,
-  Menu,
   Search,
   CircleCheck,
   ChevronDown,
@@ -21,11 +20,11 @@ export default function Header({
       <div className="header-left">
 
         <button
-          className="menu-button"
+          className="services-button"
           onClick={onMenuClick}
-          aria-label="Open menu"
+          aria-label="Open services menu"
         >
-          <Menu size={21} />
+          Services
         </button>
 
         <div className="system-status">
