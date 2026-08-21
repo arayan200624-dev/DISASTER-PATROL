@@ -3,6 +3,26 @@ import {
   getAllIncidents,
   createIncident,
 } from "../models/incidentModel";
+import { predictCityRisk } from "../services/predictionService";
+
+export const predictRisk = async (req: Request, res: Response) => {
+  try {
+    const { city, rainfall, riverLevel, soilMoisture, temperature, windSpeed } = req.body;
+    const values = [rainfall, riverLevel, soilMoisture, temperature, windSpeed];
+
+    if (!city || values.some((value) => typeof value !== "number" || value < 0 || value > 100)) {
+      return res.status(400).json({
+        success: false,
+        message: "City and five numeric risk factors from 0 to 100 are required",
+      });
+    }
+
+    return res.status(200).json({ success: true, data: predictCityRisk({ city, rainfall, riverLevel, soilMoisture, temperature, windSpeed }) });
+  } catch (error) {
+    console.error("Error generating risk prediction:", error);
+    return res.status(500).json({ success: false, message: "Failed to generate prediction" });
+  }
+};
 
 export const getIncidents = async (
   req: Request,

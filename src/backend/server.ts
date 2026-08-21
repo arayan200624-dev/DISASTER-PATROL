@@ -1,5 +1,6 @@
 import express from "express";
 import incidentRoutes from "./routes/incidentRoutes";
+import predictionRoutes from "./routes/predictionRoutes";
 import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/database";
@@ -20,6 +21,7 @@ app.use(
 
 app.use(express.json());
 app.use("/api/incidents", incidentRoutes);
+app.use("/api/predictions", predictionRoutes);
 
 app.get("/", (_req, res) => {
   res.json({ message: "AI Disaster Management API is running 🚨" });
